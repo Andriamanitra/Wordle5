@@ -47,8 +47,7 @@ def find_cliques(graph: dict[int, set[int]]) -> Iterator[list[int]]:
     """
     Finds sets of 5 nodes that are all connected to each other.
     """
-    nodes = list(graph.keys())
-    for i in nodes:
+    for i in graph:
         i_neighbors = graph[i]
         for j in i_neighbors:
             ij_neighbors = i_neighbors & graph[j]
