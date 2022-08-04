@@ -1,0 +1,8 @@
+{
+	"authors": [
+		"Andriamanitra"
+	],
+	"description": "Figure out different ways to guess 5 different Wordle words without repeating any letter",
+	"license": "MIT",
+	"name": "wordle5solver"
+}
