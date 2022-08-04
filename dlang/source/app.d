@@ -7,6 +7,7 @@ import std.conv;
 import std.string : splitLines;
 import std.file;
 import std.algorithm;
+import core.time;
 
 uint toNum(in string word) {
     uint num = 0;
@@ -69,14 +70,20 @@ uint[][] findCliques(in bool[uint][uint] graph) {
 
 void main(string[] args) {
     string wordsFileName = "../test.txt";
+    string outputFileName = "dresults.txt";
     auto getoptResult = getopt(
         args,
-        "wordsfile|w", "WORDSFILE", &wordsFileName
+        "wordsfile|w", "WORDSFILE", &wordsFileName,
+        "outputfile|o", "OUTPUTFILE", &outputFileName
     );
     if (getoptResult.helpWanted) {
         defaultGetoptPrinter("./main [-w WORDSFILE]", getoptResult.options);
         return;
     }
+
+    auto tBefore = MonoTime.currTime;
+
+    writeln("Reading words (from ", wordsFileName, ")...");
     auto words = std.file.readText(wordsFileName).splitLines;
     string[][uint] wordsByNum;
     foreach(word; words) {
@@ -95,8 +102,10 @@ void main(string[] args) {
         " distinct 5-letter words with 5 distinct letters (after removing anagrams)"
     );
 
+    writeln("Building a graph...");
     auto graph = makeGraph(wordsByNum);
 
+    writeln("Finding cliques of 5 words...");
     auto cliques = findCliques(graph);
 
     string[] cliquesStrs;
@@ -104,10 +113,14 @@ void main(string[] args) {
         cliquesStrs ~= cliq.map!(num => wordsByNum[num].sort.join('|')).array.sort.join(',');
     }
 
-    writeln("Found ", cliques.length, " cliques");
+    auto tAfter = MonoTime.currTime;
+    long nsecs = ticksToNSecs(tAfter.ticks - tBefore.ticks);
 
-    auto outputFile = File("dresults.txt", "w");
+    writefln("Done! Found %d cliques in %.3f seconds.", cliques.length, nsecs / 1e9);
+
+    auto outputFile = File(outputFileName, "w");
     foreach(s; cliquesStrs.sort) {
         outputFile.writeln(s);
     }
+    writeln("Results were written to ", outputFileName);
 }
