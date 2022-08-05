@@ -15,12 +15,13 @@ The two main tricks that make my version significantly faster are:
 
 ## Alternative implementations
 
-Because I like trying out different programming languages I also ported my code to Dlang and Julia.
-Surprisingly the directly translated Dlang version is actually a lot slower than Python, and Julia is about the same.
+Because I like trying out different programming languages I also ported my code to Dlang, Julia, and Rust.
+Surprisingly the directly translated Dlang version is actually a lot slower than Python, and Julia is about the same. Even the Rust version is not much faster (although I'm not proficient in Rust so the code is probably pretty bad).
 
 Some approximate timings (I haven't done proper benchmarking):
 1. Julia using additional tricks (`fast.jl`): ~20 seconds
 1. PyPy3.9: ~1 minute
+1. Rust: ~1 minute 40 seconds
 1. Julia (`main.jl`): ~2 minutes
 1. Python3.10: ~2 minutes
 1. Dlang, compiled with LDC2: ~3 minutes
