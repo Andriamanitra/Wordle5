@@ -22,7 +22,7 @@ julia> word_to_num("cabaca")
 function word_to_num(word::String)
     num = UInt32(0)
     for letter in word
-        num |= UInt(1) << (letter - 'a')
+        num |= UInt32(1) << (letter - 'a')
     end
     return num
 end
